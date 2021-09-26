@@ -41,6 +41,7 @@
         <p v-if="invalidInput">
           One or more input fields are invalid. Please check your provided data.
         </p>
+        <p v-if="error">{{ error }}</p>
         <div>
           <base-button>Submit</base-button>
         </div>
@@ -55,7 +56,8 @@ export default {
     return {
       enteredName: '',
       chosenRating: null,
-      invalidInput: false
+      invalidInput: false,
+      error: null
     };
   },
   methods: {
@@ -65,7 +67,7 @@ export default {
         return;
       }
       this.invalidInput = false;
-
+      this.error = null;
       fetch('https://actions-gdg-alex.firebaseio.com/surveys.json', {
         method: 'POST',
         headers: {
@@ -75,6 +77,9 @@ export default {
           name: this.enteredName,
           rating: this.chosenRating
         })
+      }).catch(error => {
+        console.error(error);
+        this.error = 'Something went wrong - try again later!';
       });
 
       this.enteredName = '';
