@@ -76,11 +76,18 @@ export default {
         body: JSON.stringify({
           name: this.enteredName,
           rating: this.chosenRating
+        }) // just remove json.stringify to cause 400 error response
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Could not save data');
+          }
         })
-      }).catch(error => {
-        console.error(error);
-        this.error = 'Something went wrong - try again later!';
-      });
+        .catch(error => {
+          console.error(error);
+          this.error =
+            error.message ?? 'Something went wrong - try again later!';
+        });
 
       this.enteredName = '';
       this.chosenRating = null;

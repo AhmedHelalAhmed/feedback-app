@@ -46,6 +46,8 @@ export default {
         .then(response => {
           if (response.ok) {
             return response.json();
+          } else {
+            throw new Error('Could not get data');
           }
         })
         .then(data => {
@@ -65,7 +67,8 @@ export default {
         })
         .catch(error => {
           this.isLoading = false;
-          this.error = 'Failed to fetch data - please try again later.';
+          this.error =
+            error.message ?? 'Failed to fetch data - please try again later.';
           console.log(error);
         });
     }
